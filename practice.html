@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fractions Using Decimal Notation - Interactive Practice</title>
+<style>
+:root{
+  --orange:#f58220;
+  --blue:#a9d8f3;
+  --yellow:#ffe06a;
+  --ink:#1f2937;
+  --soft:#eef7fb;
+  --green:#1f9d55;
+  --red:#c0392b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f6fbfe;
+  color:var(--ink);
+}
+header{
+  background:var(--orange);
+  color:#fff;
+  padding:16px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+header h1{margin:0;font-size:clamp(24px,3vw,40px)}
+header .sub{font-size:15px;font-weight:700}
+.wrap{
+  max-width:1400px;
+  margin:0 auto;
+  padding:18px;
+}
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:16px;
+}
+button{
+  border:none;
+  border-radius:12px;
+  padding:12px 18px;
+  font-size:18px;
+  font-weight:800;
+  cursor:pointer;
+}
+.primary{background:#1677e8;color:#fff}
+.secondary{background:#dcecff;color:#0d57b4}
+.orange{background:var(--orange);color:#fff}
+.problem-card{
+  background:#fff;
+  border:2px solid #cad8e3;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.topline{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+  margin-bottom:14px;
+}
+.problem-num{
+  font-size:22px;
+  font-weight:900;
+}
+.progress{
+  font-size:16px;
+  color:#64748b;
+  font-weight:700;
+}
+.content{
+  display:grid;
+  grid-template-columns:minmax(340px, 1fr) minmax(420px, 1.25fr);
+  gap:26px;
+  align-items:start;
+}
+.model-panel,.steps-panel{
+  background:#fbfdff;
+  border:2px solid #e0eaf1;
+  border-radius:16px;
+  padding:18px;
+}
+.model-title,.steps-title{
+  margin:0 0 12px;
+  font-size:22px;
+  font-weight:900;
+}
+.grid-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:8px;
+}
+#hundredGrid{
+  width:min(520px, 92%);
+  aspect-ratio:1/1;
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  grid-template-rows:repeat(10,1fr);
+  border:3px solid #222;
+  background:#fff;
+}
+.cell{
+  border-right:1px solid #333;
+  border-bottom:1px solid #333;
+}
+.cell:nth-child(10n){border-right:none}
+.cell:nth-last-child(-n+10){border-bottom:none}
+.cell.tenth{background:var(--blue)}
+.cell.hundredth{background:var(--yellow)}
+.legend{
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  margin-top:14px;
+  font-weight:700;
+  flex-wrap:wrap;
+}
+.swatch{display:inline-block;width:18px;height:18px;border:1px solid #333;vertical-align:-3px;margin-right:6px}
+.swatch.blue{background:var(--blue)}
+.swatch.yellow{background:var(--yellow)}
+.step{
+  background:#fff;
+  border:2px solid #dbe6ee;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.step-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.badge{
+  background:var(--orange);
+  color:#fff;
+  border-radius:8px;
+  padding:5px 9px;
+  font-size:13px;
+  font-weight:900;
+}
+.step h3{margin:0;font-size:19px}
+.entry-row{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+  font-size:22px;
+  font-weight:700;
+}
+.fraction-row{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  font-size:22px;
+  font-weight:700;
+}
+.vfrac{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:90px;
+}
+.vfrac .num{
+  width:86px;
+  margin:0 0 4px 0;
+}
+.vfrac .bar{
+  width:86px;
+  border-top:3px solid #1f2937;
+  margin:0 0 4px 0;
+}
+.vfrac .den{
+  font-size:24px;
+  font-weight:800;
+  line-height:1.1;
+}
+input, select{
+  font-size:22px;
+  padding:8px 10px;
+  border:2px solid #9fb3c8;
+  border-radius:8px;
+  background:#fff;
+}
+input{
+  width:100px;
+  text-align:center;
+}
+select{
+  min-width:220px;
+  font-weight:700;
+}
+.answer{
+  margin-top:10px;
+  padding:10px 12px;
+  background:#eefaf3;
+  border-left:5px solid var(--green);
+  border-radius:8px;
+  font-size:20px;
+  font-weight:800;
+  display:none;
+}
+.feedback{
+  margin-top:10px;
+  min-height:24px;
+  font-size:16px;
+  font-weight:800;
+}
+.feedback.ok{color:var(--green)}
+.feedback.no{color:var(--red)}
+.nav{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:16px;
+}
+@media (max-width:900px){
+  .content{grid-template-columns:1fr}
+  input.wide{width:100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Fractions Using Decimal Notation</h1>
+    <div class="sub">Interactive Smart Board Practice</div>
+  </div>
+  <div class="sub">Blue = tenths &nbsp; • &nbsp; Yellow = hundredths</div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar" style="align-items:center">
+    <label style="font-weight:800;font-size:18px">Student:
+      <input id="studentName" style="width:220px;text-align:left" placeholder="Type your name">
+    </label>
+    <button class="primary" id="newProblem">New Problem</button>
+    <button class="secondary" id="checkAll">Check My Work</button>
+    <button class="secondary" id="revealAll">Reveal Answers</button>
+    <button class="secondary" id="clearAll">Clear</button>
+    <button class="secondary" id="homeBtn">← Activities Menu</button>
+    <button class="primary" id="submitPracticeBtn">Submit Results</button>
+    <span id="practiceSubmitStatus" style="font-weight:800"></span>
+  </div>
+
+  <div style="margin-bottom:12px;font-weight:800;font-size:18px">
+    Progress: <span id="practiceProgress">0 / 8 problems checked</span> ·
+    Correct steps: <span id="correctSteps">0 / 32</span>
+  </div>
+  <section class="problem-card">
+    <div class="topline">
+      <div class="problem-num" id="problemLabel">Problem 1</div>
+      <div class="progress" id="progressLabel">1 of 8</div>
+    </div>
+
+    <div class="content">
+      <div class="model-panel">
+        <h2 class="model-title">Model</h2>
+        <div class="grid-wrap"><div id="hundredGrid" aria-label="hundredths grid"></div></div>
+        <div class="legend">
+          <span><span class="swatch blue"></span>full tenths</span>
+          <span><span class="swatch yellow"></span>extra hundredths</span>
+        </div>
+      </div>
+
+      <div class="steps-panel">
+        <h2 class="steps-title">Work Through the Steps</h2>
+
+        <div class="step">
+          <div class="step-head"><span class="badge">STEP 1</span><h3>Identify tenths and hundredths.</h3></div>
+          <div class="fraction-row">
+            <span>Fraction:</span>
+            <div class="vfrac">
+              <input id="tenthsNum" class="num" inputmode="numeric" aria-label="tenths numerator">
+              <div class="bar"></div>
+              <div class="den">10</div>
+            </div>
+            <span>+</span>
+            <div class="vfrac">
+              <input id="hundredthsNum" class="num" inputmode="numeric" aria-label="hundredths numerator">
+              <div class="bar"></div>
+              <div class="den">100</div>
+            </div>
+          </div>
+          <div class="answer" id="ans1"></div>
+          <div class="feedback" id="fb1"></div>
+        </div>
+
+        <div class="step">
+          <div class="step-head"><span class="badge">STEP 2</span><h3>Add the fractions.</h3></div>
+          <div class="fraction-row">
+            <div class="vfrac">
+              <input id="convertedNum" class="num" inputmode="numeric" aria-label="converted tenths numerator">
+              <div class="bar"></div>
+              <div class="den">100</div>
+            </div>
+            <span>+</span>
+            <div class="vfrac">
+              <input id="addHundredths" class="num" inputmode="numeric" aria-label="hundredths numerator repeated">
+              <div class="bar"></div>
+              <div class="den">100</div>
+            </div>
+            <span>=</span>
+            <div class="vfrac">
+              <input id="sumNum" class="num" inputmode="numeric" aria-label="sum numerator">
+              <div class="bar"></div>
+              <div class="den">100</div>
+            </div>
+          </div>
+          <div class="answer" id="ans2"></div>
+          <div class="feedback" id="fb2"></div>
+        </div>
+
+        <div class="step">
+          <div class="step-head"><span class="badge">STEP 3</span><h3>Write the fraction as a decimal.</h3></div>
+          <div class="entry-row">Decimal: <input id="decimalAns" aria-label="decimal answer"></div>
+          <div class="answer" id="ans3"></div>
+          <div class="feedback" id="fb3"></div>
+        </div>
+
+        <div class="step">
+          <div class="step-head"><span class="badge">STEP 4</span><h3>Name the decimal in word form.</h3></div>
+          <div class="entry-row">
+            <span>Word Form:</span>
+            <select id="wordNumber" aria-label="number word">
+              <option value="">Choose number words</option>
+            </select>
+            <select id="wordPlace" aria-label="place value word">
+              <option value="">Choose place value</option>
+              <option value="tenths">tenths</option>
+              <option value="hundredths">hundredths</option>
+            </select>
+          </div>
+          <div class="answer" id="ans4"></div>
+          <div class="feedback" id="fb4"></div>
+        </div>
+
+        <div class="nav">
+          <button class="secondary" id="prevBtn">← Previous</button>
+          <button class="orange" id="nextBtn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const problems = [
+  {t:1,h:6},
+  {t:3,h:4},
+  {t:4,h:7},
+  {t:5,h:2},
+  {t:6,h:8},
+  {t:2,h:9},
+  {t:7,h:3},
+  {t:8,h:5}
+];
+
+let index=0;
+const problemResults = problems.map(()=>({checked:false, stepCorrect:[false,false,false,false], checks:0}));
+let totalChecks=0;
+const practiceStart=Date.now();
+const RESULTS_ENDPOINT = "https://script.google.com/a/macros/everett.k12.ma.us/s/AKfycbx5ULDfsRUuxLc3geGXTOvZ71dxZRszPjzAy1MEqk_HepMkmXQDJyM0zRcH16SPgVg/exec";
+
+const ids = ["tenthsNum","hundredthsNum","convertedNum","addHundredths","sumNum","decimalAns"];
+const answers = ["ans1","ans2","ans3","ans4"];
+const fbs = ["fb1","fb2","fb3","fb4"];
+
+const ones = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+const teens = ["ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+const tensWords = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+
+function numberWord(n){
+  if(n<10) return ones[n];
+  if(n<20) return teens[n-10];
+  const t=Math.floor(n/10), o=n%10;
+  return tensWords[t] + (o ? "-" + ones[o] : "");
+}
+function wordForm(total){
+  return numberWord(total) + " hundredths";
+}
+function expected(p){
+  const total=p.t*10+p.h;
+  return {
+    tenths:String(p.t),
+    hundredths:String(p.h),
+    converted:String(p.t*10),
+    addHundredths:String(p.h),
+    sum:String(total),
+    decimal:(total/100).toFixed(2).replace(/^0(\.)/,"0$1"),
+    word:wordForm(total)
+  };
+}
+function makeGrid(p){
+  const g=document.getElementById("hundredGrid");
+  g.innerHTML="";
+  for(let r=0;r<10;r++){
+    for(let c=0;c<10;c++){
+      const cell=document.createElement("div");
+      cell.className="cell";
+      if(r<p.t) cell.classList.add("tenth");
+      else if(r===p.t && c<p.h) cell.classList.add("hundredth");
+      g.appendChild(cell);
+    }
+  }
+}
+function clearFields(){
+  ids.forEach(id=>document.getElementById(id).value="");
+  document.getElementById("wordNumber").value="";
+  document.getElementById("wordPlace").value="";
+  answers.forEach(id=>document.getElementById(id).style.display="none");
+  fbs.forEach(id=>{
+    const el=document.getElementById(id);
+    el.textContent="";
+    el.className="feedback";
+  });
+}
+function populateWordChoices(){
+  const select=document.getElementById("wordNumber");
+  const current=select.value;
+  const choices=problems.map(p=>numberWord(p.t*10+p.h));
+  const unique=[...new Set(choices)];
+  select.innerHTML='<option value="">Choose number words</option>';
+  unique.forEach(w=>{
+    const opt=document.createElement("option");
+    opt.value=w;
+    opt.textContent=w;
+    select.appendChild(opt);
+  });
+  if(unique.includes(current)) select.value=current;
+}
+function loadProblem(){
+  const p=problems[index];
+  populateWordChoices();
+  document.getElementById("problemLabel").textContent="Problem "+(index+1);
+  document.getElementById("progressLabel").textContent=(index+1)+" of "+problems.length;
+  makeGrid(p);
+  clearFields();
+  document.getElementById("prevBtn").disabled=index===0;
+  document.getElementById("nextBtn").disabled=index===problems.length-1;
+}
+function normText(s){
+  return s.toLowerCase().trim().replace(/\s+/g," ").replace(/-/g," ");
+}
+function check(){
+  const p=problems[index], e=expected(p);
+  const checks = [
+    {
+      ok: document.getElementById("tenthsNum").value.trim()===e.tenths &&
+          document.getElementById("hundredthsNum").value.trim()===e.hundredths,
+      fb:"fb1"
+    },
+    {
+      ok: document.getElementById("convertedNum").value.trim()===e.converted &&
+          document.getElementById("addHundredths").value.trim()===e.addHundredths &&
+          document.getElementById("sumNum").value.trim()===e.sum,
+      fb:"fb2"
+    },
+    {
+      ok: document.getElementById("decimalAns").value.trim()===e.decimal ||
+          document.getElementById("decimalAns").value.trim()===String(Number(e.decimal)),
+      fb:"fb3"
+    },
+    {
+      ok: normText(document.getElementById("wordNumber").value + " " + document.getElementById("wordPlace").value)===normText(e.word),
+      fb:"fb4"
+    }
+  ];
+  checks.forEach((c,i)=>{
+    const el=document.getElementById(c.fb);
+    el.textContent=c.ok ? "✓ Correct" : "Try again.";
+    el.className="feedback "+(c.ok?"ok":"no");
+    if(c.ok) problemResults[index].stepCorrect[i]=true;
+  });
+  problemResults[index].checked=true;
+  problemResults[index].checks++;
+  totalChecks++;
+  updatePracticeProgress();
+}
+
+function updatePracticeProgress(){
+  const checkedCount=problemResults.filter(r=>r.checked).length;
+  const correct=problemResults.reduce((sum,r)=>sum+r.stepCorrect.filter(Boolean).length,0);
+  document.getElementById("practiceProgress").textContent=`${checkedCount} / ${problems.length} problems checked`;
+  document.getElementById("correctSteps").textContent=`${correct} / ${problems.length*4}`;
+}
+function reveal(){
+  const p=problems[index], e=expected(p);
+  document.getElementById("ans1").textContent=`${e.tenths}/10 + ${e.hundredths}/100`;
+  document.getElementById("ans2").textContent=`${e.converted}/100 + ${e.addHundredths}/100 = ${e.sum}/100`;
+  document.getElementById("ans3").textContent=e.decimal;
+  document.getElementById("ans4").textContent=e.word;
+  answers.forEach(id=>document.getElementById(id).style.display="block");
+}
+
+async function submitPracticeResults(){
+  const name=(document.getElementById("studentName").value || "").trim();
+  const status=document.getElementById("practiceSubmitStatus");
+  if(!name){
+    status.textContent="Type your name first.";
+    document.getElementById("studentName").focus();
+    return;
+  }
+  if(RESULTS_ENDPOINT.includes("YOUR_GOOGLE")){
+    status.textContent="Teacher setup is not finished yet.";
+    return;
+  }
+
+  const checkedCount=problemResults.filter(r=>r.checked).length;
+  const correct=problemResults.reduce((sum,r)=>sum+r.stepCorrect.filter(Boolean).length,0);
+  const elapsed=Math.round((Date.now()-practiceStart)/1000);
+
+  const detail=problemResults.map((r,i)=>({
+    problem:i+1,
+    checked:r.checked,
+    correct_steps:r.stepCorrect.filter(Boolean).length,
+    checks:r.checks
+  }));
+
+  const payload=new URLSearchParams();
+  payload.set("activity","Guided Practice");
+  payload.set("student1",name);
+  payload.set("student2","");
+  payload.set("mode","single");
+  payload.set("score1",String(correct));
+  payload.set("score2","");
+  payload.set("matches","");
+  payload.set("moves",String(totalChecks));
+  payload.set("time_seconds",String(elapsed));
+  payload.set("sets",`${checkedCount}/${problems.length} problems checked; ${correct}/${problems.length*4} steps correct; details=${JSON.stringify(detail)}`);
+  payload.set("submitted_at",new Date().toISOString());
+
+  status.textContent="Submitting...";
+  try{
+    await fetch(RESULTS_ENDPOINT,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:payload.toString()
+    });
+    status.textContent="✓ Results submitted!";
+  }catch(err){
+    status.textContent="Could not submit. Please tell your teacher.";
+  }
+}
+
+document.getElementById("checkAll").addEventListener("click",check);
+document.getElementById("revealAll").addEventListener("click",reveal);
+document.getElementById("clearAll").addEventListener("click",clearFields);
+document.getElementById("prevBtn").addEventListener("click",()=>{if(index>0){index--;loadProblem();}});
+document.getElementById("nextBtn").addEventListener("click",()=>{if(index<problems.length-1){index++;loadProblem();}});
+document.getElementById("homeBtn").addEventListener("click",()=>{ window.location.href="index.html"; });
+document.getElementById("submitPracticeBtn").addEventListener("click",submitPracticeResults);
+document.getElementById("newProblem").addEventListener("click",()=>{
+  let next=Math.floor(Math.random()*problems.length);
+  if(next===index) next=(next+1)%problems.length;
+  index=next;
+  loadProblem();
+});
+updatePracticeProgress();
+loadProblem();
+</script>
+</body>
+</html>
